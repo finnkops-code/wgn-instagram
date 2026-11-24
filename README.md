@@ -23,7 +23,7 @@ Elk uur start een Google Apps Script-klok (`apps-script/trigger.gs`) de workflow
 
 Elke run zet de volledige ranking met uitleg in de samenvatting van de GitHub Action. Alle punten, woorden en tijden staan in `config.json`.
 
-**Visual**: 1080×1350, artikelfoto bovenaan (staande/vierkante foto's uitgelijnd op **centrum-boven**, zodat hoofden niet worden afgesneden), daaronder tour-label, datum en de kop in Fraunces. `design_variant` in `config.json`: `A` = zonder logo (zoals WBN), `B` = met het G-logo in de footer.
+**Visual**: 1080×1350, artikelfoto bovenaan (staande/vierkante foto's uitgelijnd op **centrum-boven**, zodat hoofden niet worden afgesneden), daaronder tour-label, datum en de kop in Fraunces. Geen logo op de visuals (`design_variant` = `A` in `config.json`); alleen WORLDGOLFNEWS.ORG in de footer.
 
 **Facebook**: dezelfde visual op de WGN Facebook-pagina, met de artikellink klikbaar in de tekst (Facebook-route met page token, zie setup).
 
