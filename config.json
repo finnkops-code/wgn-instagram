@@ -11,7 +11,7 @@
   "title_max_chars": 70,
   "graph_api_version": "v23.0",
   "image_base_url": "https://raw.githubusercontent.com/finnkops-code/wgn-instagram/main/posts/",
-  "design_variant": "A",
+  "design_variant": "B",
   "post_to_facebook": true,
   "tag_players": false,
   "tag_min_followers": 20000,
