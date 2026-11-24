@@ -90,7 +90,7 @@
       },
       "final-round drama": {
         "points": 20,
-        "pattern": "\\b(playoff|play-off|sudden death|final round|sunday charge|comeback|collapse|holds on|one[- ]shot lead|leads? by|takes? (the )?lead|54-hole lead|monday finish)\\b"
+        "pattern": "\\b(playoff|play-off|sudden death|final round|sunday charge|comeback|final-round collapse|collapses? down the stretch|holds on|one[- ]shot lead|leads? by|takes? (the )?lead|54-hole lead|monday finish)\\b"
       },
       "star performance": {
         "points": 12,
