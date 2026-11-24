@@ -1,0 +1,136 @@
+{
+  "site_url": "https://worldgolfnews.org/",
+  "site_label": "WORLDGOLFNEWS.ORG",
+  "timezone": "Europe/Amsterdam",
+  "max_posts_per_day": 3,
+  "min_posts_per_day": 3,
+  "hard_max_posts_per_day": 3,
+  "min_minutes_between_posts": 60,
+  "max_article_age_hours": 72,
+  "fallback_article_age_hours": 72,
+  "title_max_chars": 70,
+  "graph_api_version": "v23.0",
+  "image_base_url": "https://raw.githubusercontent.com/finnkops-code/wgn-instagram/main/posts/",
+  "design_variant": "A",
+  "post_to_facebook": true,
+  "tag_players": false,
+  "tag_min_followers": 20000,
+  "must_post_score": 70,
+  "breaking_score": 80,
+  "reserve_last_slot_until": "00:00",
+  "prime_time_bonus": 8,
+  "window_late_minutes": 90,
+  "local_active": ["07:00", "23:00"],
+  "local_prime": [["07:00", "09:30"], ["12:00", "14:00"], ["18:00", "22:30"]],
+  "default_audience_timezone": "America/New_York",
+  "follow_line": "Follow for daily golf news, leaderboards and results from the professional tours worldwide ⛳🌍",
+  "base_hashtags": ["#golf", "#worldgolfnews", "#golfnews"],
+  "league_hashtags": {
+    "pga-tour": ["#PGATOUR", "#PGATourGolf"],
+    "dp-world-tour": ["#DPWorldTour", "#EuropeanGolf"],
+    "liv-golf": ["#LIVGolf"],
+    "lpga-tour": ["#LPGA", "#WomensGolf"],
+    "korn-ferry-tour": ["#KornFerryTour", "#PGATOUR"],
+    "pga-tour-champions": ["#PGATOURChampions", "#SeniorGolf"],
+    "ladies-european-tour": ["#LETgolf", "#WomensGolf"],
+    "japan-golf-tour": ["#JGTO", "#JapanGolf", "#ゴルフ"],
+    "asian-tour": ["#AsianTour", "#AsianGolf"],
+    "majors": ["#MajorChampionship", "#PGATOUR"],
+    "golf-news": ["#GolfLife", "#ProGolf"]
+  },
+  "league_labels": {
+    "pga-tour": "PGA TOUR",
+    "dp-world-tour": "DP WORLD TOUR",
+    "liv-golf": "LIV GOLF",
+    "lpga-tour": "LPGA",
+    "korn-ferry-tour": "KORN FERRY",
+    "pga-tour-champions": "CHAMPIONS",
+    "ladies-european-tour": "LET",
+    "japan-golf-tour": "JAPAN TOUR",
+    "asian-tour": "ASIAN TOUR",
+    "majors": "MAJORS",
+    "golf-news": "GOLF"
+  },
+  "league_timezones": {
+    "pga-tour": "America/New_York",
+    "korn-ferry-tour": "America/New_York",
+    "pga-tour-champions": "America/New_York",
+    "lpga-tour": "America/New_York",
+    "liv-golf": "America/New_York",
+    "majors": "America/New_York",
+    "dp-world-tour": "Europe/London",
+    "ladies-european-tour": "Europe/London",
+    "japan-golf-tour": "Asia/Tokyo",
+    "asian-tour": "Asia/Singapore",
+    "golf-news": "America/New_York"
+  },
+  "scoring": {
+    "base_points": 20,
+    "extra_topic_points": 5,
+    "topics": {
+      "major win": {
+        "points": 45,
+        "pattern": "\\b(wins?|won|claims?|captures?|triumphs?|crowned|seals?|clinch\\w*|victory)\\b.*\\b(masters|u\\.?s\\.? (women's )?open|open championship|the open|pga championship|chevron championship|evian|women's pga|women's open|major)\\b|\\b(green jacket|claret jug|wanamaker|first major|maiden major|career grand slam)\\b"
+      },
+      "season title / team event": {
+        "points": 40,
+        "pattern": "\\b(fedex ?cup|race to dubai|tour championship|cme group|player of the year|money title|order of merit|ryder cup|solheim cup|presidents cup|olympic|gold medal|team championship|individual title)\\b"
+      },
+      "historic feat": {
+        "points": 35,
+        "pattern": "\\b(record|records|historic|history|first[- ]ever|albatross|double eagle|hole[- ]in[- ]one|aces?|shoots? (a )?(5[5-9]|60)|sub-60|wire[- ]to[- ]wire|youngest|oldest|milestone)\\b"
+      },
+      "big move": {
+        "points": 28,
+        "pattern": "\\b(signs?|signed|signing|joins|joined|defects?|leaves|leaving|retires?|retirement|suspend\\w*|ban(ned)?|merger|framework agreement|captain|vice[- ]captain|split with|new caddie|new coach|equipment deal)\\b"
+      },
+      "tournament win": {
+        "points": 26,
+        "pattern": "\\b(wins?|won|claims?|captures?|triumphs?|victory|maiden title|first title|first win|breakthrough win|defends? (his|her) title)\\b"
+      },
+      "final-round drama": {
+        "points": 20,
+        "pattern": "\\b(playoff|play-off|sudden death|final round|sunday charge|comeback|collapse|holds on|one[- ]shot lead|leads? by|takes? (the )?lead|54-hole lead|monday finish)\\b"
+      },
+      "star performance": {
+        "points": 12,
+        "pattern": "\\b(eagle|course record|bogey[- ]free|6[0-4]|birdie (run|streak|blitz)|career[- ]low|low round)\\b"
+      },
+      "round recap": {
+        "points": 6,
+        "pattern": "\\b(shoots?|cards?|fires?|opens? with|round|surges?|climbs?|moves? up)\\b"
+      }
+    },
+    "penalties": {
+      "amateur/junior/college": {
+        "points": -10,
+        "pattern": "\\b(junior|juniors|college|ncaa|u-?1[0-9]|high school)\\b"
+      },
+      "service/admin": {
+        "points": -12,
+        "pattern": "\\b(tee times?|pairings|how to watch|tv schedule|streaming|field list|odds|picks|betting|predictions?|schedule|weather delay|suspended for darkness)\\b"
+      },
+      "preview": {
+        "points": -6,
+        "pattern": "\\b(preview|what to watch|set for|ahead of|things to know)\\b"
+      }
+    },
+    "most_read_bonus": 10,
+    "decay_per_hour": 0.6,
+    "same_story_min_shared_words": 3,
+    "same_story_penalty": -35,
+    "same_league_penalty": -12,
+    "rotation_days": 7,
+    "rotation_penalty": -3,
+    "random_jitter": 8,
+    "generic_words": ["golf", "tour", "pga", "lpga", "liv", "world", "round", "rounds", "open", "championship", "classic",
+      "invitational", "title", "wins", "win", "won", "lead", "leads", "first", "season", "final", "shot", "shots",
+      "under", "par", "birdie", "birdies", "major", "dp"]
+  },
+  "auto_accept_collaborators": [],
+  "weekly": {
+    "_note": "Player of the Week (donderdag) en ranglijsten (maandag) worden aangezet na akkoord op het voorstel; zie README.",
+    "player_of_the_week": {"enabled": false, "post_weekday": 3, "post_after": "17:00"},
+    "rankings": {"enabled": false, "post_weekday": 0, "post_after": "17:00"}
+  }
+}

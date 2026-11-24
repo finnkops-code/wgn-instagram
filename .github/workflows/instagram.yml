@@ -1,0 +1,112 @@
+name: Instagram autopost
+
+on:
+  schedule:
+    # Backup only: the Google Apps Script clock (apps-script/trigger.gs) starts this workflow every hour.
+    # The bot itself enforces max 3 article posts/day, 60+ min between posts and the score/time rules.
+    - cron: "37 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only create the visual + caption, don't post"
+        type: boolean
+        default: false
+      url:
+        description: "Optional: post this specific article instead of the automatic pick"
+        type: string
+        default: ""
+      collaborators:
+        description: "Optional: Instagram collaborators for that article, comma separated (max 3)"
+        type: string
+        default: ""
+      slides:
+        description: "Optional: slides JSON in the repo (e.g. slides/xyz.json) to make a carousel"
+        type: string
+        default: ""
+      weekly:
+        description: "Post a weekly special now: potw or rankings (leave empty for normal run)"
+        type: string
+        default: ""
+      force:
+        description: "Post the best available story now, ignoring score thresholds and time windows (daily max still applies)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-autopost
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Accept collab invites from trusted accounts
+        continue-on-error: true
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_API_ROUTE: ${{ vars.IG_API_ROUTE }}
+        run: python bot.py collabs
+
+      - name: Pick headline, render visual + caption
+        id: prep
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run == true }}
+          FORCE_POST: ${{ inputs.force == true }}
+          ARTICLE_URL: ${{ inputs.url }}
+          COLLABORATORS: ${{ inputs.collaborators }}
+          SLIDES: ${{ inputs.slides }}
+          WEEKLY: ${{ inputs.weekly }}
+        run: |
+          if [ -n "$WEEKLY" ]; then python bot.py prepare-weekly "$WEEKLY"
+          elif [ "${ARTICLE_URL#custom:}" != "$ARTICLE_URL" ]; then python bot.py prepare-custom "${ARTICLE_URL#custom:}"
+          elif [ -n "$ARTICLE_URL" ]; then python bot.py prepare-url "$ARTICLE_URL"; else python bot.py prepare; fi
+
+      - name: Upload visual (Instagram fetches it from the public raw URL)
+        id: upload
+        if: steps.prep.outputs.has_post == 'true'
+        run: |
+          git config user.name  "wgn-instagram-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add posts/
+          git diff --cached --quiet || (git commit -m "Visual: $(jq -r .headline pending.json)" && git pull --rebase -q && git push)
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "### Caption" >> $GITHUB_STEP_SUMMARY
+          jq -r .caption pending.json >> $GITHUB_STEP_SUMMARY
+
+      - name: Publish to Instagram
+        if: steps.prep.outputs.has_post == 'true' && inputs.dry_run != true
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_API_ROUTE: ${{ vars.IG_API_ROUTE }}
+          IMAGE_SHA: ${{ steps.upload.outputs.sha }}
+        run: python bot.py publish
+
+      - name: Save posting log
+        if: steps.prep.outputs.has_post == 'true' && inputs.dry_run != true
+        run: |
+          git add -A state/ posts/
+          git diff --cached --quiet || (git commit -m "Posted to Instagram" && git pull --rebase -q && git push)
+
+      - name: Save weekly data (snapshots, Player of the Week specs)
+        if: always()
+        run: |
+          git config user.name  "wgn-instagram-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add state/ 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Weekly data" && git pull --rebase -q && git push)
